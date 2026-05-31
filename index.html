@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SP-OOTER KITTY</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #03071e;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 0 25px rgba(225, 112, 26, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* UI Overlay UI Design */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 2, 16, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .homepage-bg {
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-size: 52px;
+            margin: 0 0 10px 0;
+            color: #fff;
+            text-shadow: 0 0 15px #e1701a, 3px 3px 0px #e1701a;
+            letter-spacing: 3px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #f28530;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #e0e0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 80%;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            align-items: center;
+            background: rgba(9, 9, 30, 0.85);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e1701a;
+        }
+
+        button {
+            background: #e1701a;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 4px 10px rgba(225, 112, 26, 0.4);
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: #f28530;
+            transform: scale(1.02);
+        }
+
+        .switch-auth-btn {
+            background: transparent;
+            box-shadow: none;
+            color: #a0a0c0;
+            font-size: 13px;
+            text-decoration: underline;
+            margin-top: 15px;
+        }
+        .switch-auth-btn:hover {
+            background: transparent;
+            color: white;
+            transform: none;
+        }
+
+        input[type="text"], input[type="password"] {
+            background: #12122c;
+            border: 2px solid #222244;
+            color: white;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 12px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #e1701a;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 6px 10px !important;
+            margin-bottom: 8px !important;
+            font-size: 12px !important;
+            border-radius: 4px !important;
+        }
+
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 13px;
+            margin-bottom: 10px;
+            text-align: center;
+            min-height: 18px;
+            font-weight: bold;
+        }
+
+        /* Leaderboard box styling */
+        .leaderboard-box {
+            width: 320px;
+            background: rgba(9, 9, 30, 0.9);
+            border: 1px solid #222244;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .leaderboard-title {
+            font-weight: bold;
+            color: #e1701a;
+            border-bottom: 1px solid #222244;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+
+        .leaderboard-rows {
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 14px;
+            border-bottom: 1px dashed #151535;
+        }
+
+        .score-row.highlight {
+            color: #5cf27e;
+            font-weight: bold;
+        }
+
+        .user-tag {
+            font-size: 15px;
+            color: #5cf27e;
+            margin-bottom: 15px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div id="auth-screen" class="overlay homepage-bg">
+            <h1>SP-OOTER KITTY</h1>
+            <h2 id="auth-title">PILOT LOGIN</h2>
+
+            <div class="auth-form">
+                <div id="auth-error" class="error-msg">Loading Assets...</div>
+                <input type="text" id="auth-user" placeholder="Username (e.g. Alex)" maxlength="10">
+                <input type="password" id="auth-pass" placeholder="Password">
+                <button id="auth-submit-btn" disabled>WAITING FOR IMAGE UTILITIES</button>
+                <button id="auth-toggle-btn" class="switch-auth-btn">Need an account? Register here</button>
+            </div>
+        </div>
+
+        <div id="main-menu" class="overlay hidden">
+            <h1>SP-OOTER KITTY</h1>
+            <div id="welcome-tag" class="user-tag">Welcome, Pilot!</div>
+            <p>Use Left/Right Arrow Keys (or A/D) to Move. Spacebar to Shoot.</p>
+
+            <button id="start-btn" style="width: auto; padding: 12px 50px;">LAUNCH ROCKET</button>
+
+            <div class="leaderboard-box">
+                <div class="leaderboard-title"><span>Global Top 10</span><span>Score</span></div>
+                <input type="text" id="menu-search" class="search-bar" placeholder="🔍 Search pilot username...">
+                <div id="menu-leaderboard-content" class="leaderboard-rows">Loading records...</div>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="overlay hidden">
+            <h1>GAME OVER</h1>
+            <p id="final-score-text">Your Score: 0</p>
+            <button id="restart-btn" style="width: auto; padding: 12px 50px;">PLAY AGAIN</button>
+
+            <div class="leaderboard-box">
+                <div class="leaderboard-title"><span>Global Top 10</span><span>Score</span></div>
+                <input type="text" id="gameover-search" class="search-bar" placeholder="🔍 Search pilot username...">
+                <div id="gameover-leaderboard-content" class="leaderboard-rows">Updating database...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // UI Target Links
+        const authScreen = document.getElementById('auth-screen');
+        const authTitle = document.getElementById('auth-title');
+        const authUser = document.getElementById('auth-user');
+        const authPass = document.getElementById('auth-pass');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authToggleBtn = document.getElementById('auth-toggle-btn');
+        const authError = document.getElementById('auth-error');
+
+        const mainMenu = document.getElementById('main-menu');
+        const welcomeTag = document.getElementById('welcome-tag');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const finalScoreText = document.getElementById('final-score-text');
+
+        const menuLeaderboard = document.getElementById('menu-leaderboard-content');
+        const gameoverLeaderboard = document.getElementById('gameover-leaderboard-content');
+        const menuSearchInput = document.getElementById('menu-search');
+        const gameoverSearchInput = document.getElementById('gameover-search');
+
+        // Game Account Variables
+        let isLoginMode = true;
+        let currentUser = "";
+        let cachedGlobalScores = []; 
+
+        // --- GLOBAL MULTIPLAYER LEADERBOARD CONFIG ---
+        const API_URL = `https://api.jsonbin.io/v3/b/665a0b7cad19ca34f8723c31`; 
+        const API_KEY = '$2a$10$7Z2m8Xv6p697mXmG9KWRM.H38y/nZ.W9mYhXv2P1vveTz6pms8YvO'; 
+
+        // Game Configuration Properties
+        let gameState = 'MENU'; 
+        let score = 0;
+        let player;
+        let lasers = [];
+        let enemies = [];
+        let keys = {};
+        let enemyDirection = 1;
+        let enemySpeed = 1;
+        let enemyWave = 1;
+
+        // --- SAFE IMAGE PRELOADER ---
+        const bgImg = new Image(); bgImg.src = 'background alt.png';
+        const homeBgImg = new Image(); homeBgImg.src = 'homepage image.png';
+        const rocketImg = new Image(); rocketImg.src = 'kitty rocket.png';
+        const catSkin1 = new Image(); catSkin1.src = 'kitty alt skin1.png';
+        const catSkin2 = new Image(); catSkin2.src = 'kitty alt skin2.png';
+        const catSkin3 = new Image(); catSkin3.src = 'kitty alt skin3.png';
+
+        let loadedImagesCount = 0;
+        const totalImagesNeeded = 6;
+
+        function trackImageLoading() {
+            loadedImagesCount++;
+            if (loadedImagesCount === totalImagesNeeded) {
+                // Images are fully cached. Unlock registration/login mechanics.
+                authError.innerText = "";
+                authSubmitBtn.disabled = false;
+                authSubmitBtn.innerText = "ENTER COCKPIT";
+                loop(); 
+            }
+        }
+
+        bgImg.onload = trackImageLoading;
+        rocketImg.onload = trackImageLoading;
+        catSkin1.onload = trackImageLoading;
+        catSkin2.onload = trackImageLoading;
+        catSkin3.onload = trackImageLoading;
+        homeBgImg.onload = () => {
+            authScreen.style.backgroundImage = `url('${homeBgImg.src}')`;
+            trackImageLoading();
+        };
+
+        // Keyboard tracking systems
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+
+        // --- STEP 1: AUTHENTICATION FLOW SYSTEM ---
+        authToggleBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            authError.innerText = "";
+            if (isLoginMode) {
+                authTitle.innerText = "PILOT LOGIN";
+                authSubmitBtn.innerText = "ENTER COCKPIT";
+                authToggleBtn.innerText = "Need an account? Register here";
+            } else {
+                authTitle.innerText = "CREATE ACCOUNT";
+                authSubmitBtn.innerText = "REGISTER PILOT";
+                authToggleBtn.innerText = "Already registered? Login here";
+            }
+        });
+
+        authSubmitBtn.addEventListener('click', () => {
+            const username = authUser.value.trim();
+            const password = authPass.value.trim();
+            authError.innerText = "";
+
+            if (!username || !password) {
+                authError.innerText = "Fields cannot be blank!";
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('kitty_space_accounts')) || {};
+
+            if (isLoginMode) {
+                if (users[username] && users[username] === password) {
+                    initiateSession(username);
+                } else {
+                    authError.innerText = "Invalid credentials.";
+                }
+            } else {
+                if (users[username]) {
+                    authError.innerText = "Pilot username taken!";
+                } else {
+                    users[username] = password;
+                    localStorage.setItem('kitty_space_accounts', JSON.stringify(users));
+                    initiateSession(username);
+                }
+            }
+        });
+
+        function initiateSession(username) {
+            currentUser = username;
+            welcomeTag.innerText = `🚀 Active Pilot: ${currentUser.toUpperCase()}`;
+            authScreen.classList.add('hidden');
+            mainMenu.classList.remove('hidden');
+            fetchLeaderboard(menuLeaderboard);
+        }
+
+        // --- STEP 2: GAMEPLAY RUNTIME MECHANICS ---
+        function initPlayer() {
+            player = {
+                x: canvas.width / 2 - 30,
+                y: canvas.height - 90,
+                width: 60,
+                height: 75,
+                speed: 6,
+                cooldown: 0
+            };
+        }
+
+        function spawnEnemies() {
+            enemies = [];
+            const rows = 4;
+            const cols = 8;
+            const xOffset = 75;
+            const yOffset = 55;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let skinType = catSkin1;
+                    if (r === 1) skinType = catSkin2;
+                    if (r >= 2) skinType = catSkin3;
+
+                    enemies.push({
+                        x: c * xOffset + 100,
+                        y: r * yOffset + 60,
+                        width: 45,
+                        height: 45,
+                        image: skinType, 
+                        points: (4 - r) * 10
+                    });
+                }
+            }
+        }
+
+        function update() {
+            if (gameState !== 'PLAYING') return;
+
+            if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+            if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
+
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+
+            if (player.cooldown > 0) player.cooldown--;
+            if (keys['Space'] && player.cooldown === 0) {
+                lasers.push({ x: player.x + player.width / 2 - 2.5, y: player.y, width: 5, height: 15, speed: 9 });
+                player.cooldown = 18; 
+            }
+
+            lasers.forEach((laser, index) => {
+                laser.y -= laser.speed;
+                if (laser.y < 0) lasers.splice(index, 1);
+            });
+
+            let hitWall = false;
+            enemies.forEach(enemy => {
+                enemy.x += enemySpeed * enemyDirection;
+                if (enemy.x <= 10 || enemy.x >= canvas.width - enemy.width - 10) hitWall = true;
+            });
+
+            if (hitWall) {
+                enemyDirection *= -1;
+                enemies.forEach(enemy => enemy.y += 22);
+            }
+
+            lasers.forEach((laser, lIdx) => {
+                enemies.forEach((enemy, eIdx) => {
+                    if (laser.x < enemy.x + enemy.width &&
+                        laser.x + laser.width > enemy.x &&
+                        laser.y < enemy.y + enemy.height &&
+                        laser.y + laser.height > enemy.y) {
+                        score += enemy.points;
+                        enemies.splice(eIdx, 1);
+                        lasers.splice(lIdx, 1);
+                    }
+                });
+            });
+
+            if (enemies.length === 0) {
+                enemyWave++;
+                enemySpeed += 0.4;
+                spawnEnemies();
+            }
+
+            enemies.forEach(enemy => {
+                if (enemy.y + enemy.height >= player.y || enemy.y + enemy.height >= canvas.height) {
+                    endGame();
+                }
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Back Drop image draw wrap
+            if (loadedImagesCount === totalImagesNeeded) {
+                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+            }
+
+            if (gameState === 'MENU' || gameState === 'GAMEOVER') return;
+
+            // Rocket & Enemy draws
+            ctx.drawImage(rocketImg, player.x, player.y, player.width, player.height);
+
+            ctx.fillStyle = '#ff3366';
+            lasers.forEach(laser => ctx.fillRect(laser.x, laser.y, laser.width, laser.height));
+
+            enemies.forEach(enemy => {
+                ctx.drawImage(enemy.image, enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+
+            // HUD Metadata HUD Matrix layout
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.fillText(`SCORE: ${score}`, 20, 35);
+            ctx.fillText(`PILOT: ${currentUser.toUpperCase()}`, 20, 60);
+            ctx.fillText(`WAVE: ${enemyWave}`, canvas.width - 110, 35);
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        function startGame() {
+            score = 0;
+            enemyWave = 1;
+            enemySpeed = 1.2;
+            lasers = [];
+            initPlayer();
+            spawnEnemies();
+
+            mainMenu.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            gameState = 'PLAYING';
+        }
+
+        function endGame() {
+            gameState = 'GAMEOVER';
+            finalScoreText.innerText = `Your Final Score: ${score}`;
+            gameOverScreen.classList.remove('hidden');
+            submitAndFetchLeaderboard(currentUser, score);
+        }
+
+        // --- STEP 3: LEADERBOARD DATABASE & USER LOOKUP SYSTEM ---
+        function renderLeaderboardView(targetContainer, filterQuery = "") {
+            targetContainer.innerHTML = "";
+
+            let recordsToDisplay = cachedGlobalScores;
+            if (filterQuery) {
+                recordsToDisplay = cachedGlobalScores.filter(entry => 
+                    entry.name.toLowerCase().includes(filterQuery.toLowerCase())
+                );
+            } else {
+                recordsToDisplay = cachedGlobalScores.slice(0, 10);
+            }
+
+            if (recordsToDisplay.length === 0) {
+                targetContainer.innerHTML = `<div class="score-row" style="color: #888;">No pilot found...</div>`;
+                return;
+            }
+
+            recordsToDisplay.forEach(entry => {
+                const row = document.createElement('div');
+                row.className = 'score-row';
+                if (entry.name.toLowerCase() === currentUser.toLowerCase()) {
+                    row.classList.add('highlight');
+                }
+                row.innerHTML = `<span>${entry.name}</span><span>${entry.score}</span>`;
+                targetContainer.appendChild(row);
+            });
+        }
+
+        async function fetchLeaderboard(containerElement) {
+            containerElement.innerHTML = "Accessing cloud base...";
+            try {
+                const response = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                const data = await response.json();
+                cachedGlobalScores = data.record.scores || [];
+                cachedGlobalScores.sort((a, b) => b.score - a.score);
+
+                renderLeaderboardView(containerElement);
+            } catch (err) {
+                containerElement.innerHTML = "Offline sync error.";
+            }
+        }
+
+        async function submitAndFetchLeaderboard(name, newScore) {
+            gameoverLeaderboard.innerHTML = "Syncing pilot score to network...";
+            try {
+                const response = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
+                const data = await response.json();
+                let scores = data.record.scores || [];
+
+                const existingPlayerIdx = scores.findIndex(entry => entry.name.toLowerCase() === name.toLowerCase());
+                if (existingPlayerIdx !== -1) {
+                    if (newScore > scores[existingPlayerIdx].score) {
+                        scores[existingPlayerIdx].score = parseInt(newScore);
+                    }
+                } else {
+                    scores.push({ name: name, score: parseInt(newScore) });
+                }
+
+                scores.sort((a,b) => b.score - a.score);
+                cachedGlobalScores = scores.slice(0, 50); 
+
+                await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify({ scores: cachedGlobalScores })
+                });
+
+                renderLeaderboardView(gameoverLeaderboard);
+            } catch (err) {
+                console.error("Error submitting rank logs: ", err);
+                renderLeaderboardView(gameoverLeaderboard);
+            }
+        }
+
+        menuSearchInput.addEventListener('input', (e) => renderLeaderboardView(menuLeaderboard, e.target.value));
+        gameoverSearchInput.addEventListener('input', (e) => renderLeaderboardView(gameoverLeaderboard, e.target.value));
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
