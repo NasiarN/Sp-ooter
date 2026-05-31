@@ -30,14 +30,14 @@
             display: block;
         }
 
-        /* UI Overlay UI Design */
+        /* UI Overlay Design */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(2, 2, 16, 0.85);
+            background: rgba(2, 2, 16, 0.88);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -51,27 +51,26 @@
         }
 
         h1 {
-            font-size: 52px;
-            margin: 0 0 10px 0;
+            font-size: 46px;
+            margin: 0 0 5px 0;
             color: #fff;
             text-shadow: 0 0 15px #e1701a, 3px 3px 0px #e1701a;
             letter-spacing: 3px;
         }
 
         h2 {
-            font-size: 22px;
+            font-size: 20px;
             color: #f28530;
             margin-bottom: 20px;
             letter-spacing: 1px;
         }
 
         p {
-            font-size: 15px;
+            font-size: 14px;
             color: #e0e0f0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
             max-width: 80%;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
         }
 
         .auth-form {
@@ -85,38 +84,75 @@
             border: 1px solid #e1701a;
         }
 
-        button {
+        /* Menu Navigation Button Styling */
+        .menu-nav-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 85%;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: #151535;
+            border: 1px solid #333366;
+            color: #a0a0c0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background: #e1701a;
+            color: white;
+            border-color: #f28530;
+            box-shadow: 0 0 10px rgba(225, 112, 26, 0.3);
+        }
+
+        /* Menu Tab Windows */
+        .menu-tab-content {
+            width: 75%;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(9, 9, 30, 0.6);
+            border: 1px solid #222244;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        button.action-btn {
             background: #e1701a;
             color: white;
             border: none;
-            padding: 12px 30px;
-            font-size: 16px;
+            padding: 14px 50px;
+            font-size: 18px;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
             box-shadow: 0 4px 10px rgba(225, 112, 26, 0.4);
-            width: 100%;
-            margin-top: 5px;
+            transition: transform 0.1s, background 0.2s;
         }
 
-        button:hover {
+        button.action-btn:hover {
             background: #f28530;
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
         .switch-auth-btn {
             background: transparent;
-            box-shadow: none;
+            border: none;
             color: #a0a0c0;
             font-size: 13px;
             text-decoration: underline;
             margin-top: 15px;
-        }
-        .switch-auth-btn:hover {
-            background: transparent;
-            color: white;
-            transform: none;
+            cursor: pointer;
         }
 
         input[type="text"], input[type="password"] {
@@ -131,19 +167,37 @@
             outline: none;
             width: 100%;
             box-sizing: border-box;
-            transition: border-color 0.2s;
         }
 
-        input:focus {
-            border-color: #e1701a;
-        }
+        input:focus { border-color: #e1701a; }
 
         .search-bar {
             width: 100%;
-            padding: 6px 10px !important;
-            margin-bottom: 8px !important;
-            font-size: 12px !important;
-            border-radius: 4px !important;
+            padding: 8px 12px !important;
+            margin-bottom: 10px !important;
+            font-size: 13px !important;
+            border-radius: 6px !important;
+        }
+
+        /* Customization Interface Controls */
+        .color-picker-grid {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .color-swatch {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid #12122c;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .color-swatch:hover, .color-swatch.selected {
+            transform: scale(1.15);
+            border-color: white;
         }
 
         .error-msg {
@@ -155,14 +209,8 @@
             font-weight: bold;
         }
 
-        /* Leaderboard box styling */
         .leaderboard-box {
-            width: 320px;
-            background: rgba(9, 9, 30, 0.9);
-            border: 1px solid #222244;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            width: 100%;
         }
 
         .leaderboard-title {
@@ -173,35 +221,28 @@
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
         }
 
         .leaderboard-rows {
-            max-height: 180px;
+            max-height: 160px;
             overflow-y: auto;
         }
 
         .score-row {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 6px 0;
             font-size: 14px;
             border-bottom: 1px dashed #151535;
         }
 
-        .score-row.highlight {
-            color: #5cf27e;
-            font-weight: bold;
-        }
+        .score-row.highlight { color: #5cf27e; font-weight: bold; }
 
         .user-tag {
-            font-size: 15px;
+            font-size: 14px;
             color: #5cf27e;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: bold;
-            background: rgba(0,0,0,0.4);
-            padding: 5px 15px;
-            border-radius: 20px;
         }
 
         .hidden { display: none !important; }
@@ -215,12 +256,12 @@
         <div id="auth-screen" class="overlay homepage-bg">
             <h1>SP-OOTER KITTY</h1>
             <h2 id="auth-title">PILOT LOGIN</h2>
-
+            
             <div class="auth-form">
                 <div id="auth-error" class="error-msg">Loading Assets...</div>
-                <input type="text" id="auth-user" placeholder="Username (e.g. Alex)" maxlength="10">
+                <input type="text" id="auth-user" placeholder="Username" maxlength="10">
                 <input type="password" id="auth-pass" placeholder="Password">
-                <button id="auth-submit-btn" disabled>WAITING FOR IMAGE UTILITIES</button>
+                <button id="auth-submit-btn" style="width:100%; margin-top:5px;" disabled>INITIALIZING ENGINES...</button>
                 <button id="auth-toggle-btn" class="switch-auth-btn">Need an account? Register here</button>
             </div>
         </div>
@@ -228,26 +269,45 @@
         <div id="main-menu" class="overlay hidden">
             <h1>SP-OOTER KITTY</h1>
             <div id="welcome-tag" class="user-tag">Welcome, Pilot!</div>
-            <p>Use Left/Right Arrow Keys (or A/D) to Move. Spacebar to Shoot.</p>
+            
+            <div class="menu-nav-container">
+                <button id="nav-play" class="nav-btn active">1. PLAY GAME</button>
+                <button id="nav-leaderboard" class="nav-btn">2. LEADERBOARD</button>
+                <button id="nav-customize" class="nav-btn">3. CUSTOMIZE SHIP</button>
+            </div>
 
-            <button id="start-btn" style="width: auto; padding: 12px 50px;">LAUNCH ROCKET</button>
+            <div id="tab-play" class="menu-tab-content">
+                <p>Warning: Deep space sectors are highly hostile. Enemy invaders will counterattack with plasma fire.</p>
+                <p style="color: #a0a0c0; font-size:13px; margin-bottom:25px;">Controls: Use Left/Right Arrow Keys (or A/D) to Move. Spacebar to Shoot.</p>
+                <button id="start-btn" class="action-btn">LAUNCH ROCKET</button>
+            </div>
 
-            <div class="leaderboard-box">
-                <div class="leaderboard-title"><span>Global Top 10</span><span>Score</span></div>
-                <input type="text" id="menu-search" class="search-bar" placeholder="🔍 Search pilot username...">
-                <div id="menu-leaderboard-content" class="leaderboard-rows">Loading records...</div>
+            <div id="tab-leaderboard" class="menu-tab-content hidden">
+                <div class="leaderboard-box">
+                    <input type="text" id="menu-search" class="search-bar" placeholder="🔍 Type username to search live records...">
+                    <div class="leaderboard-title"><span>Global Top 10 Pilots</span><span>Highscore</span></div>
+                    <div id="menu-leaderboard-content" class="leaderboard-rows">Loading system data...</div>
+                </div>
+            </div>
+
+            <div id="tab-customize" class="menu-tab-content hidden">
+                <p>Modify the energy shield core color configuration of your Kitty Rocket hull matrix:</p>
+                <div class="color-picker-grid">
+                    <div class="color-swatch selected" data-color="rgba(255,255,255,0)" style="background: linear-gradient(45deg, #fff, #ccc); border:2px solid #fff;"></div> <div class="color-swatch" data-color="rgba(0, 242, 254, 0.45)" style="background: #00f2fe;"></div> <div class="color-swatch" data-color="rgba(225, 112, 26, 0.5)" style="background: #e1701a;"></div> <div class="color-swatch" data-color="rgba(242, 92, 132, 0.5)" style="background: #f25c84;"></div> <div class="color-swatch" data-color="rgba(92, 242, 126, 0.5)" style="background: #5cf27e;"></div> </div>
+                <p id="custom-tint-label" style="margin-top: 20px; font-weight:bold; color:#f28530;">Current Core: Standard Plating</p>
             </div>
         </div>
 
         <div id="game-over-screen" class="overlay hidden">
             <h1>GAME OVER</h1>
-            <p id="final-score-text">Your Score: 0</p>
-            <button id="restart-btn" style="width: auto; padding: 12px 50px;">PLAY AGAIN</button>
-
-            <div class="leaderboard-box">
-                <div class="leaderboard-title"><span>Global Top 10</span><span>Score</span></div>
-                <input type="text" id="gameover-search" class="search-bar" placeholder="🔍 Search pilot username...">
-                <div id="gameover-leaderboard-content" class="leaderboard-rows">Updating database...</div>
+            <p id="final-score-text">Your Final Score: 0</p>
+            <button id="restart-btn" class="action-btn" style="margin-bottom: 20px;">PLAY AGAIN</button>
+            
+            <div class="menu-tab-content" style="width: 50%; min-height: auto;">
+                <div class="leaderboard-box">
+                    <div class="leaderboard-title"><span>Global Top 10</span><span>Score</span></div>
+                    <div id="gameover-leaderboard-content" class="leaderboard-rows">Updating network database...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -256,7 +316,7 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // UI Target Links
+        // Document Object Link Targets
         const authScreen = document.getElementById('auth-screen');
         const authTitle = document.getElementById('auth-title');
         const authUser = document.getElementById('auth-user');
@@ -264,40 +324,52 @@
         const authSubmitBtn = document.getElementById('auth-submit-btn');
         const authToggleBtn = document.getElementById('auth-toggle-btn');
         const authError = document.getElementById('auth-error');
-
+        
         const mainMenu = document.getElementById('main-menu');
         const welcomeTag = document.getElementById('welcome-tag');
         const gameOverScreen = document.getElementById('game-over-screen');
         const startBtn = document.getElementById('start-btn');
         const restartBtn = document.getElementById('restart-btn');
         const finalScoreText = document.getElementById('final-score-text');
-
+        
         const menuLeaderboard = document.getElementById('menu-leaderboard-content');
         const gameoverLeaderboard = document.getElementById('gameover-leaderboard-content');
         const menuSearchInput = document.getElementById('menu-search');
-        const gameoverSearchInput = document.getElementById('gameover-search');
 
-        // Game Account Variables
+        // Menu Tab Switch Buttons
+        const navPlay = document.getElementById('nav-play');
+        const navLeaderboard = document.getElementById('nav-leaderboard');
+        const navCustomize = document.getElementById('nav-customize');
+
+        // Menu Tab Window Panes
+        const tabPlay = document.getElementById('tab-play');
+        const tabLeaderboard = document.getElementById('tab-leaderboard');
+        const tabCustomize = document.getElementById('tab-customize');
+
+        // State Machine Storage Data 
         let isLoginMode = true;
         let currentUser = "";
         let cachedGlobalScores = []; 
+        let selectedShipTint = "rgba(255,255,255,0)"; // Ship Color Configuration
 
-        // --- GLOBAL MULTIPLAYER LEADERBOARD CONFIG ---
+        // --- GLOBAL MULTIPLAYER DATABASE ENDPOINT ---
         const API_URL = `https://api.jsonbin.io/v3/b/665a0b7cad19ca34f8723c31`; 
         const API_KEY = '$2a$10$7Z2m8Xv6p697mXmG9KWRM.H38y/nZ.W9mYhXv2P1vveTz6pms8YvO'; 
 
-        // Game Configuration Properties
+        // Gameplay Parameters
         let gameState = 'MENU'; 
         let score = 0;
+        let lives = 3; // Difficulty Upgrade
         let player;
         let lasers = [];
+        let enemyBombs = []; // Difficulty Upgrade
         let enemies = [];
         let keys = {};
         let enemyDirection = 1;
-        let enemySpeed = 1;
+        let enemySpeed = 1.5; // Increased base speed
         let enemyWave = 1;
 
-        // --- SAFE IMAGE PRELOADER ---
+        // --- SAFE IMAGE PRELOAD ENGINE ---
         const bgImg = new Image(); bgImg.src = 'background alt.png';
         const homeBgImg = new Image(); homeBgImg.src = 'homepage image.png';
         const rocketImg = new Image(); rocketImg.src = 'kitty rocket.png';
@@ -311,7 +383,6 @@
         function trackImageLoading() {
             loadedImagesCount++;
             if (loadedImagesCount === totalImagesNeeded) {
-                // Images are fully cached. Unlock registration/login mechanics.
                 authError.innerText = "";
                 authSubmitBtn.disabled = false;
                 authSubmitBtn.innerText = "ENTER COCKPIT";
@@ -329,11 +400,47 @@
             trackImageLoading();
         };
 
-        // Keyboard tracking systems
+        // Key Listeners
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
-        // --- STEP 1: AUTHENTICATION FLOW SYSTEM ---
+        // --- TAB SELECTION MENU ENGINE ---
+        function switchMenuTab(activeNavButton, targetTabElement) {
+            // Remove active tags from buttons
+            [navPlay, navLeaderboard, navCustomize].forEach(btn => btn.classList.remove('active'));
+            // Hide all workspace boxes
+            [tabPlay, tabLeaderboard, tabCustomize].forEach(tab => tab.classList.add('hidden'));
+            
+            activeNavButton.classList.add('active');
+            targetTabElement.classList.remove('hidden');
+        }
+
+        navPlay.addEventListener('click', () => switchMenuTab(navPlay, tabPlay));
+        navLeaderboard.addEventListener('click', () => {
+            switchMenuTab(navLeaderboard, tabLeaderboard);
+            fetchLeaderboard(menuLeaderboard);
+        });
+        navCustomize.addEventListener('click', () => switchMenuTab(navCustomize, tabCustomize));
+
+        // Color Swatch Interaction Handle
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', (e) => {
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                e.target.classList.add('selected');
+                selectedShipTint = e.target.getAttribute('data-color');
+                
+                const labels = {
+                    "rgba(255,255,255,0)": "Standard Plating",
+                    "rgba(0, 242, 254, 0.45)": "Cyan Shield Core Activated",
+                    "rgba(225, 112, 26, 0.5)": "Thermal Orange Core Activated",
+                    "rgba(242, 92, 132, 0.5)": "Pink Nebula Plating Activated",
+                    "rgba(92, 242, 126, 0.5)": "Radioactive Green Plating Activated"
+                };
+                document.getElementById('custom-tint-label').innerText = `Current Core: ${labels[selectedShipTint]}`;
+            });
+        });
+
+        // --- AUTHENTICATION SYSTEM ---
         authToggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
             authError.innerText = "";
@@ -382,17 +489,17 @@
             welcomeTag.innerText = `🚀 Active Pilot: ${currentUser.toUpperCase()}`;
             authScreen.classList.add('hidden');
             mainMenu.classList.remove('hidden');
-            fetchLeaderboard(menuLeaderboard);
+            switchMenuTab(navPlay, tabPlay); // Default to Play tab on launch
         }
 
-        // --- STEP 2: GAMEPLAY RUNTIME MECHANICS ---
+        // --- GAMEPLAY RUNTIME RUN MECHANICS ---
         function initPlayer() {
             player = {
                 x: canvas.width / 2 - 30,
                 y: canvas.height - 90,
                 width: 60,
                 height: 75,
-                speed: 6,
+                speed: 6.5,
                 cooldown: 0
             };
         }
@@ -425,34 +532,68 @@
         function update() {
             if (gameState !== 'PLAYING') return;
 
+            // Movement Controls
             if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
             if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
 
             if (player.x < 0) player.x = 0;
             if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
 
+            // Attack Laser Cooldown Loop
             if (player.cooldown > 0) player.cooldown--;
             if (keys['Space'] && player.cooldown === 0) {
                 lasers.push({ x: player.x + player.width / 2 - 2.5, y: player.y, width: 5, height: 15, speed: 9 });
-                player.cooldown = 18; 
+                player.cooldown = 15; // Faster shooting rate response
             }
 
+            // Move Lasers
             lasers.forEach((laser, index) => {
                 laser.y -= laser.speed;
                 if (laser.y < 0) lasers.splice(index, 1);
             });
 
+            // Move Alien Bombs (Difficulty Upgrade)
+            enemyBombs.forEach((bomb, index) => {
+                bomb.y += bomb.speed;
+                if (bomb.y > canvas.height) enemyBombs.splice(index, 1);
+
+                // Collision detection with player ship matrix
+                if (bomb.x < player.x + player.width &&
+                    bomb.x + bomb.width > player.x &&
+                    bomb.y < player.y + player.height &&
+                    bomb.y + bomb.height > player.y) {
+                    enemyBombs.splice(index, 1);
+                    loseLife();
+                }
+            });
+
+            // Invader Grid Logic & Random Bomb Dropping (Difficulty Upgrade)
             let hitWall = false;
+            const baseBombDropChance = 0.0008; 
+            const waveModifierChance = baseBombDropChance * enemyWave;
+
             enemies.forEach(enemy => {
                 enemy.x += enemySpeed * enemyDirection;
                 if (enemy.x <= 10 || enemy.x >= canvas.width - enemy.width - 10) hitWall = true;
+
+                // Fire Enemy plasma bombs down randomly
+                if (Math.random() < Math.min(waveModifierChance, 0.02)) {
+                    enemyBombs.push({
+                        x: enemy.x + enemy.width / 2 - 3,
+                        y: enemy.y + enemy.height,
+                        width: 6,
+                        height: 14,
+                        speed: 4 + (enemyWave * 0.5) // Bombs speed up with waves!
+                    });
+                }
             });
 
             if (hitWall) {
                 enemyDirection *= -1;
-                enemies.forEach(enemy => enemy.y += 22);
+                enemies.forEach(enemy => enemy.y += 24); // Drops down faster
             }
 
+            // Laser Collision Core
             lasers.forEach((laser, lIdx) => {
                 enemies.forEach((enemy, eIdx) => {
                     if (laser.x < enemy.x + enemy.width &&
@@ -466,12 +607,14 @@
                 });
             });
 
+            // Next Wave Trigger
             if (enemies.length === 0) {
                 enemyWave++;
-                enemySpeed += 0.4;
+                enemySpeed += 0.5; // Acceleration scaling increase
                 spawnEnemies();
             }
 
+            // Defeat Check: Reached the ground surface zone
             enemies.forEach(enemy => {
                 if (enemy.y + enemy.height >= player.y || enemy.y + enemy.height >= canvas.height) {
                     endGame();
@@ -479,31 +622,61 @@
             });
         }
 
+        function loseLife() {
+            lives--;
+            if (lives <= 0) {
+                endGame();
+            }
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Back Drop image draw wrap
             if (loadedImagesCount === totalImagesNeeded) {
                 ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
             }
 
             if (gameState === 'MENU' || gameState === 'GAMEOVER') return;
 
-            // Rocket & Enemy draws
+            // Draw Player Rocket Asset
             ctx.drawImage(rocketImg, player.x, player.y, player.width, player.height);
 
+            // Apply Selected Color Customization Core Overlay Shield Tint
+            if (selectedShipTint !== "rgba(255,255,255,0)") {
+                ctx.save();
+                ctx.globalCompositeOperation = "source-atop";
+                ctx.fillStyle = selectedShipTint;
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+                ctx.restore();
+            }
+
+            // Draw Player Lasers
             ctx.fillStyle = '#ff3366';
             lasers.forEach(laser => ctx.fillRect(laser.x, laser.y, laser.width, laser.height));
 
+            // Draw Alien Alien Bombs
+            ctx.fillStyle = '#00f2fe';
+            enemyBombs.forEach(bomb => ctx.fillRect(bomb.x, bomb.y, bomb.width, bomb.height));
+
+            // Draw Alien Cat Skins
             enemies.forEach(enemy => {
                 ctx.drawImage(enemy.image, enemy.x, enemy.y, enemy.width, enemy.height);
             });
 
-            // HUD Metadata HUD Matrix layout
+            // HUD Metadata Setup
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 18px sans-serif';
+            ctx.font = 'bold 16px sans-serif';
             ctx.fillText(`SCORE: ${score}`, 20, 35);
             ctx.fillText(`PILOT: ${currentUser.toUpperCase()}`, 20, 60);
+            
+            // Draw Lives Indicators (Difficulty Upgrade)
+            ctx.fillText(`LIVES: `, canvas.width / 2 - 40, 35);
+            ctx.fillStyle = '#ff3366';
+            for (let i = 0; i < lives; i++) {
+                ctx.fillRect(canvas.width / 2 + 15 + (i * 18), 22, 12, 14);
+            }
+
+            ctx.fillStyle = '#ffffff';
             ctx.fillText(`WAVE: ${enemyWave}`, canvas.width - 110, 35);
         }
 
@@ -515,12 +688,14 @@
 
         function startGame() {
             score = 0;
+            lives = 3;
             enemyWave = 1;
-            enemySpeed = 1.2;
+            enemySpeed = 1.6;
             lasers = [];
+            enemyBombs = [];
             initPlayer();
             spawnEnemies();
-
+            
             mainMenu.classList.add('hidden');
             gameOverScreen.classList.add('hidden');
             gameState = 'PLAYING';
@@ -533,10 +708,10 @@
             submitAndFetchLeaderboard(currentUser, score);
         }
 
-        // --- STEP 3: LEADERBOARD DATABASE & USER LOOKUP SYSTEM ---
+        // --- GLOBAL NETWORK DATABASE SYSTEM ---
         function renderLeaderboardView(targetContainer, filterQuery = "") {
             targetContainer.innerHTML = "";
-
+            
             let recordsToDisplay = cachedGlobalScores;
             if (filterQuery) {
                 recordsToDisplay = cachedGlobalScores.filter(entry => 
@@ -547,7 +722,7 @@
             }
 
             if (recordsToDisplay.length === 0) {
-                targetContainer.innerHTML = `<div class="score-row" style="color: #888;">No pilot found...</div>`;
+                targetContainer.innerHTML = `<div class="score-row" style="color: #888;">No pilot match found...</div>`;
                 return;
             }
 
@@ -563,21 +738,21 @@
         }
 
         async function fetchLeaderboard(containerElement) {
-            containerElement.innerHTML = "Accessing cloud base...";
+            containerElement.innerHTML = "Syncing network pipeline...";
             try {
                 const response = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
                 const data = await response.json();
                 cachedGlobalScores = data.record.scores || [];
                 cachedGlobalScores.sort((a, b) => b.score - a.score);
-
+                
                 renderLeaderboardView(containerElement);
             } catch (err) {
-                containerElement.innerHTML = "Offline sync error.";
+                containerElement.innerHTML = "Offline network lookup error.";
             }
         }
 
         async function submitAndFetchLeaderboard(name, newScore) {
-            gameoverLeaderboard.innerHTML = "Syncing pilot score to network...";
+            gameoverLeaderboard.innerHTML = "Uploading stats to system array...";
             try {
                 const response = await fetch(API_URL, { headers: { 'X-Master-Key': API_KEY } });
                 const data = await response.json();
@@ -591,7 +766,7 @@
                 } else {
                     scores.push({ name: name, score: parseInt(newScore) });
                 }
-
+                
                 scores.sort((a,b) => b.score - a.score);
                 cachedGlobalScores = scores.slice(0, 50); 
 
@@ -603,16 +778,20 @@
 
                 renderLeaderboardView(gameoverLeaderboard);
             } catch (err) {
-                console.error("Error submitting rank logs: ", err);
+                console.error("Transmission breakdown: ", err);
                 renderLeaderboardView(gameoverLeaderboard);
             }
         }
 
+        // Live input search event
         menuSearchInput.addEventListener('input', (e) => renderLeaderboardView(menuLeaderboard, e.target.value));
-        gameoverSearchInput.addEventListener('input', (e) => renderLeaderboardView(gameoverLeaderboard, e.target.value));
 
         startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', () => {
+            gameOverScreen.classList.add('hidden');
+            mainMenu.classList.remove('hidden');
+            switchMenuTab(navPlay, tabPlay); // Bring them back to menu base view
+        });
     </script>
 </body>
 </html>
