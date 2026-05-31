@@ -84,6 +84,30 @@
             border: 1px solid #e1701a;
         }
 
+        .header-status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background: #ff4d4d;
+            border: none;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #ff3333;
+        }
+
         .menu-nav-container {
             display: flex;
             gap: 10px;
@@ -238,7 +262,6 @@
         .user-tag {
             font-size: 14px;
             color: #5cf27e;
-            margin-bottom: 10px;
             font-weight: bold;
         }
 
@@ -265,7 +288,11 @@
 
         <div id="main-menu" class="overlay hidden">
             <h1>SP-OOTER KITTY</h1>
-            <div id="welcome-tag" class="user-tag">Welcome, Pilot!</div>
+            
+            <div class="header-status-container">
+                <div id="welcome-tag" class="user-tag">Welcome, Pilot!</div>
+                <button id="logout-btn" class="logout-btn">LOG OUT</button>
+            </div>
             
             <div class="menu-nav-container">
                 <button id="nav-play" class="nav-btn active">1. PLAY GAME</button>
@@ -296,7 +323,7 @@
                     <div class="color-swatch" data-color="#bf5cf2" style="background: #bf5cf2;"></div>
                     <div class="color-swatch" data-color="#5cf27e" style="background: #5cf27e;"></div>
                 </div>
-                <p id="custom-tint-label" style="margin-top: 20px; font-weight:bold; color:#f28530;">Weapon Output: Plasma Pink (Standard)</p>
+                <p id="custom-tint-label" style="margin-top: 20px; font-weight:bold; color:#f28530;">Weapon Output: Toe-Beam Pink (Standard)</p>
             </div>
         </div>
 
@@ -328,6 +355,7 @@
         
         const mainMenu = document.getElementById('main-menu');
         const welcomeTag = document.getElementById('welcome-tag');
+        const logoutBtn = document.getElementById('logout-btn');
         const gameOverScreen = document.getElementById('game-over-screen');
         const startBtn = document.getElementById('start-btn');
         const restartBtn = document.getElementById('restart-btn');
@@ -351,7 +379,6 @@
         let selectedLaserColor = "#ff3366"; 
 
         // --- ZERO-SIGNUP MULTIPLAYER CLOUD STORAGE ENGINE ---
-        // Generates a unique namespace based on your repository name so nobody else overloads it
         const GAME_NAMESPACE = "sp_ooter_kitty_v2_global_scores";
         const API_URL = `https://api.rest7.com/kv/get?key=${GAME_NAMESPACE}`;
         const WRITE_URL = `https://api.rest7.com/kv/set`;
@@ -416,6 +443,7 @@
         });
         navCustomize.addEventListener('click', () => switchMenuTab(navCustomize, tabCustomize));
 
+        // Beam Color Selection Interface with Funny Cat Names
         document.querySelectorAll('.color-swatch').forEach(swatch => {
             swatch.addEventListener('click', (e) => {
                 document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
@@ -423,17 +451,17 @@
                 selectedLaserColor = e.target.getAttribute('data-color');
                 
                 const labels = {
-                    "#ff3366": "Plasma Pink (Standard)",
-                    "#00f2fe": "Hyper Cyan Ion Beam",
-                    "#e1701a": "Magma Thermal Discharge",
-                    "#bf5cf2": "Gravitational Violet Blast",
-                    "#5cf27e": "Radioactive Acid Disruptor"
+                    "#ff3366": "Toe-Beam Pink (Standard)",
+                    "#00f2fe": "Zoomie Hyper-Cyan",
+                    "#e1701a": "Hairball Hazard Orange",
+                    "#bf5cf2": "Catnip Overdose Purple",
+                    "#5cf27e": "Sour Kibble Radioactive Green"
                 };
                 document.getElementById('custom-tint-label').innerText = `Weapon Output: ${labels[selectedLaserColor]}`;
             });
         });
 
-        // --- AUTHENTICATION SYSTEM ---
+        // --- AUTHENTICATION SYSTEM & LOG OUT ---
         authToggleBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
             authError.innerText = "";
@@ -475,6 +503,14 @@
                     initiateSession(username);
                 }
             }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            currentUser = "";
+            authUser.value = "";
+            authPass.value = "";
+            mainMenu.classList.add('hidden');
+            authScreen.classList.remove('hidden');
         });
 
         function initiateSession(username) {
@@ -708,65 +744,10 @@
         async function fetchLeaderboard(containerElement) {
             containerElement.innerHTML = "Syncing network pipeline...";
             try {
-                // If it's the first time running, fallback gracefully to browser cache until network pushes live records
                 let backup = JSON.parse(localStorage.getItem('kitty_fallback_board')) || [];
                 cachedGlobalScores = backup;
                 
                 const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(API_URL)}`);
                 const wrap = await response.json();
                 if(wrap.contents) {
-                     const data = JSON.parse(wrap.contents);
-                     if(data && data.value) {
-                         cachedGlobalScores = JSON.parse(data.value);
-                     }
-                }
-                cachedGlobalScores.sort((a, b) => b.score - a.score);
-                renderLeaderboardView(containerElement);
-            } catch (err) {
-                renderLeaderboardView(containerElement);
-            }
-        }
-
-        async function submitAndFetchLeaderboard(name, newScore) {
-            gameoverLeaderboard.innerHTML = "Uploading stats to system array...";
-            try {
-                // Find local high scores first
-                let scores = cachedGlobalScores || [];
-                const existingPlayerIdx = scores.findIndex(entry => entry.name.toLowerCase() === name.toLowerCase());
-                if (existingPlayerIdx !== -1) {
-                    if (newScore > scores[existingPlayerIdx].score) {
-                        scores[existingPlayerIdx].score = parseInt(newScore);
-                    }
-                } else {
-                    scores.push({ name: name, score: parseInt(newScore) });
-                }
-                
-                scores.sort((a,b) => b.score - a.score);
-                cachedGlobalScores = scores.slice(0, 15); // Keep top 15 clean entries
-
-                localStorage.setItem('kitty_fallback_board', JSON.stringify(cachedGlobalScores));
-
-                // Send to anonymous cloud KV pipeline via form params
-                await fetch(WRITE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `key=${GAME_NAMESPACE}&value=${encodeURIComponent(JSON.stringify(cachedGlobalScores))}`
-                });
-
-                renderLeaderboardView(gameoverLeaderboard);
-            } catch (err) {
-                renderLeaderboardView(gameoverLeaderboard);
-            }
-        }
-
-        menuSearchInput.addEventListener('input', (e) => renderLeaderboardView(menuLeaderboard, e.target.value));
-
-        startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', () => {
-            gameOverScreen.classList.add('hidden');
-            mainMenu.classList.remove('hidden');
-            switchMenuTab(navPlay, tabPlay); 
-        });
-    </script>
-</body>
-</html>
+                     const data = JSON.parse
