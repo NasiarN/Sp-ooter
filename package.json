@@ -1,0 +1,11 @@
+{
+  "name": "sp-ooter-kitty",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx servor . index.html 8080",
+    "dev": "npx servor . index.html 8080"
+  },
+  "dependencies": {
+    "servor": "^4.0.2"
+  }
+}
